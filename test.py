@@ -1,11 +1,18 @@
 """
-Test cases for fizz buzz
+Define test cases for fizz buzz
 """
 from unittest import TestCase
 import base
 
+
 class FizzBuzzTest(TestCase):
+    """
+    Test cases for list implmentations of fizz buzz
+    """
     def test(self):
+        """
+        Test fizz buzz for cases up to 200
+        """
         def validate(func, n):
             answer = func(n)
             for i in range(1, n + 1):
@@ -18,4 +25,4 @@ class FizzBuzzTest(TestCase):
                 else:
                     expected = str(i)
                 self.assertEqual(answer[i-1], expected)
-        validate(base.fizz_buzz, 1000)
+        validate(base.fizz_buzz, 200)
