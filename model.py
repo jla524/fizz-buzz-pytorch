@@ -3,10 +3,11 @@ Solve fizz buzz using pytorch
 """
 import numpy as np
 import torch
+import torch.nn.functional as F
 from torch import nn, optim
 
 epochs = 100
-bs = 8
+bs = 64
 lr = 0.001
 
 
@@ -44,14 +45,14 @@ def generate_data():
 class BuzzNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.l1 = nn.Linear(10, 100)
-        self.l2 = nn.Linear(100, 4)
-        self.act = nn.ReLU()
+        self.l1 = nn.Linear(10, 200)
+        self.l2 = nn.Linear(200, 200)
+        self.l3 = nn.Linear(200, 4)
 
     def forward(self, x):
-        x = self.l1(x)
-        x = self.act(x)
-        x = self.l2(x)
+        x = F.relu(self.l1(x))
+        x = F.relu(self.l2(x))
+        x = self.l3(x)
         return x
 
 
@@ -76,18 +77,30 @@ def train(model, loss_fn, optimizer, x_train, y_train):
     return accuracies, losses
 
 
-def fizz_buzz(n):
+def test(model, x_test, y_test):
+    x = torch.tensor(x_train).float()
+    out = model(x)
+    cat = torch.argmax(out, dim=1).numpy()
+    accuracy = (cat == y_test).mean()
+    return accuracy
+
+
+def fizz_buzz(model, n):
     answer = []
     for i in range(1, n + 1):
         options = [str(i), 'Fizz', 'Buzz', 'FizzBuzz']
-        answer.append(options[1])
+        out = model(i)
+        cat = torch.argmax(out, dim=1)
+        answer.append(options[cat])
     return answer
 
 
 if __name__ == '__main__':
     x_train, y_train, x_test, y_test = generate_data()
     net = BuzzNet()
-    loss_function = nn.NLLLoss(reduction='none')
+    loss_func = F.cross_entropy
     optim = optim.SGD(net.parameters(), lr=lr)
+    train(net, loss_func, optim, x_train, y_train)
     # TODO: Accuracy is very low
-    train(net, loss_function, optim, x_train, y_train)
+    # TODO: Accuracy is very low
+    print(test(net, x_train, y_train))
