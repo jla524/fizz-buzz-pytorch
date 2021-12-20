@@ -11,11 +11,11 @@ from tqdm import trange
 weights_path = Path('../models/weights')
 
 
-def encode_input(x):
+def encode_input(x: int) -> list[int]:
     return np.array([x >> d & 1 for d in range(10)])
 
 
-def encode_fizz_buzz(x):
+def encode_fizz_buzz(x: int) -> int:
     # Ground truth
     if x % 15 == 0:
         out = 3
@@ -43,7 +43,7 @@ class BuzzNet(nn.Module):
         return x
 
 
-def train(model, x_train, y_train):
+def train(model: type[BuzzNet], x_train: np.ndarray, y_train: np.ndarray):
     iterations = 7000
     size = 128
     rate = 0.003
@@ -64,7 +64,7 @@ def train(model, x_train, y_train):
         optimizer.zero_grad()
 
 
-def test(model, x_test, y_test):
+def test(model: type[BuzzNet], x_test: np.ndarray, y_test: np.ndarray):
     model.eval()
     x = torch.tensor(x_test).float()
     cat = torch.argmax(model(x), dim=1).numpy()
@@ -75,7 +75,7 @@ def test(model, x_test, y_test):
     return accuracy
 
 
-def get_model():
+def get_model() -> type[BuzzNet]:
     net = BuzzNet()
     if weights_path.is_file():
         net.load_state_dict(torch.load(weights_path))
@@ -90,7 +90,7 @@ def get_model():
     return net
 
 
-def fizz_buzz(n):
+def fizz_buzz(n: int) -> list[str]:
     answer = []
     model = get_model()
     for i in range(1, n + 1):
