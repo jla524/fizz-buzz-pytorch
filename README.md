@@ -5,7 +5,6 @@ Solve [Fizz Buzz][1] with PyTorch.
 Read [Joel Grus' blog post][2].
 
 ## TODO
-- Add a config file
 - Add description of model
 - Visualize outputs
 
