@@ -1,14 +1,12 @@
 """
-Solve fizz buzz using pytorch
+solve fizz buzz using pytorch
 """
-from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn, optim
 from tqdm import trange
-
-weights_path = Path('../models/weights')
+from config import Config
 
 
 def encode_input(num: int) -> list[int]:
@@ -102,7 +100,7 @@ def test(model: type[BuzzNet], x_test: np.ndarray, y_test: np.ndarray) -> float:
     accuracy = (cat == y_test).mean()
     print(f"accuracy = {accuracy}")
     if accuracy == 1.0:
-        torch.save(model.state_dict(), weights_path)
+        torch.save(model.state_dict(), Config.weights_file())
     return accuracy
 
 
@@ -112,8 +110,9 @@ def get_model() -> type[BuzzNet]:
     :return: the trained MLP
     """
     net = BuzzNet()
-    if weights_path.is_file():
-        net.load_state_dict(torch.load(weights_path))
+    weights_file = Config.weights_file()
+    if weights_file.is_file():
+        net.load_state_dict(torch.load(weights_file))
         net.eval()
     else:
         x_train = np.array([encode_input(i) for i in range(101, 1024)])
