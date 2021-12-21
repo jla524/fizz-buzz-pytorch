@@ -4,18 +4,20 @@ Standard solution for Fizz Buzz
 from typing import Iterator
 
 
-def fizz_buzz(n: int) -> list[str]:
+def fizz_buzz(num: int) -> list[str]:
     """
-    Given an integer n, return a string array answer (1-indexed) where:
+    Given an integer, return a string array answer (1-indexed) where:
       answer[i] == "Fizzbuzz" if i is divisible by 3 and 5
       answer[i] == "Fizz" if i is divisible by 3
       answer[i] == "Buzz" if i is divisible by 5
       answer[i] == i (as a string) by none of the above conditions are true
+    :param num: the number of items in the answer
+    :return: the answer
     """
     answer = []
     buzz_map = {3: 'Fizz', 5: 'Buzz'}
 
-    for i in range(1, n + 1):
+    for i in range(1, num + 1):
         temp = ''
         for key, val in buzz_map.items():
             if i % key == 0:
@@ -27,13 +29,15 @@ def fizz_buzz(n: int) -> list[str]:
     return answer
 
 
-def fizz_buzz_improved(n: int) -> Iterator[str]:
+def fizz_buzz_improved(num: int) -> Iterator[str]:
     """
     A faster solution using generator
+    :param num: the number of items in the answer
+    :return: the answer
     """
     buzz_map = {3: 'Fizz', 5: 'Buzz'}
 
-    for i in range(1, n + 1):
+    for i in range(1, num + 1):
         temp = []
         for key, val in buzz_map.items():
             if i % key == 0:
