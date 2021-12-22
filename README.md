@@ -4,9 +4,8 @@ Solve [Fizz Buzz][1] with PyTorch.
 
 Read [Joel Grus' blog post][2].
 
-## TODO
-- Add description of model
-- Visualize outputs
+## Model used
+![fizzbuzz-mlp](../assets/mlp_torchviz.png?raw=true)
 
 
 [1]: https://leetcode.com/problems/fizz-buzz/
